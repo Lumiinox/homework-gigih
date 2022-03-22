@@ -1,23 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import Search from './Search.js';
+import dataSpotify from './data.js';
+import data from './data.js';
 
 function App() {
+  console.log(dataSpotify);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Create Playlist</h1>
+      <div class="content">
+        <img className="song_image" src={dataSpotify.album.images[0].url} />
+        <h3>{dataSpotify.name}</h3>
+        <p>{dataSpotify.album.artists[0].name}</p>
+        <p>{dataSpotify.album.name}</p>
+        <p>Song Description</p>
+        <button type="button">Select</button>
+    </div>
+
     </div>
   );
 }
