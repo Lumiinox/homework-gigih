@@ -1,0 +1,22 @@
+
+.wrapper{
+    border: solid;
+    border-color: aliceblue;
+    padding: 20px 20px 20px 20px;
+    margin-left: 20%;
+    margin-bottom: 5%;
+    overflow: hidden;
+    width: 60%;
+    text-align: center;
+    background-color: rgb(22, 129, 94);
+    color: white;
+}
+
+.songImageWrapper{
+    box-sizing: content-box;
+}
+
+.songImage{
+    float: left;
+    margin: 5px;
+}
