@@ -2,17 +2,13 @@ import './index.css';
 
 const Songs = (props) => {
     return(
-        <div className='wrapper'>
-            <div className='songImageWrapper'>
-                <img className="songImage" src={props.url} />
-            </div>
-            <div className='songInfoWrapper'>
-                <h2>{props.name}</h2>
-                <p>{props.artistName}</p>
-                <p>{props.albumName}</p>
-                <button type="button">Select</button>
-            </div>
-        </div>
+        <tr>
+            <td><img className="songImage" src={props.url} /></td>
+            <td className='textTdElement'>{props.name}</td>
+            <td className='textTdElement'>{props.artistName}</td>
+            <td className='textTdElement'>{props.albumName}</td>
+            <td><button type="button">Select</button></td>
+        </tr>
     )
 }
 
