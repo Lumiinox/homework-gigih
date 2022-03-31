@@ -1,4 +1,4 @@
-import Songs from '../components/song/index';
+// import Songs from '../components/song/index';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './PlayList.css';
@@ -10,12 +10,22 @@ function PlayList(){
     const RESPONSE_TYPE = "token"
 
     const [token, setToken] = useState("");
-    const [songResult, setResult] = useState([]);
     const [searchKeyword, setSearchKey] = useState("");
 
-    const RenderSongResult = () => {
-        return songResult.map((data,id) => 
-                <Songs  key={id} url={data.album.images[2].url} name={data.name} artistName={data.album.artists[0].name} albumName = {data.album.name}/>
+    const [songResult, setResult] = useState([]);
+    const [selectedSong, setSelectedSong] = useState([]);
+
+    const Songs = (props) => {
+        return(
+            <>
+                <tr>
+                    <td><img className="songImage" src={props.url} alt=""/></td>
+                    <td className='textTdElement'>{props.name}</td>
+                    <td className='textTdElement'>{props.artistName}</td>
+                    <td className='textTdElement'>{props.albumName}</td>
+                    <td>{!props.selected ? <button type="submit" onClick={()=>AddSongToSelected(props)}>Select</button> : <button type="submit">Deselect</button>}</td>
+                </tr>
+            </>
         )
     }
 
@@ -38,8 +48,6 @@ function PlayList(){
 
     const CallSpotifySearch = (e) => {
         e.preventDefault();
-        console.log(`token in search ${token}`)
-        console.log(`searchKey in search ${searchKeyword}`)
         axios.get(`https://api.spotify.com/v1/search`,
         {
             headers: {
@@ -63,22 +71,64 @@ function PlayList(){
         window.localStorage.removeItem("token");
     }  
 
+
+    function AddSongToSelected(props){
+        let newSelectedSong = selectedSong;
+        newSelectedSong.push(props);
+        setSelectedSong(newSelectedSong);
+        console.log(selectedSong);
+    }
+
     return(
         <div className='bodyWrapper'>
+
             <h1>Create Playlist</h1>
+
             <form onSubmit={CallSpotifySearch}>
                 <input type="text" placeholder='Search..' onChange={e => setSearchKey(e.target.value)}></input>
                 <button type={"submit"}>Search</button>
             </form>
+
             {!token ?
                     <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
                         to Spotify</a>
                     : <button onClick={logout}>Logout</button>}
+            
+            <h3>Selected Song</h3>
             <table>
                 <tbody>
-                    {RenderSongResult()}
+                    {!selectedSong && selectedSong.map((data,index) => 
+                            <Songs  
+                                key         = {index} 
+                                uri         = {data.uri} 
+                                selected    = {true} 
+                                url         = {data.url} 
+                                name        = {data.name} 
+                                artistName  = {data.artistName} 
+                                albumName   = {data.albumName}
+                            />
+                        )}
                 </tbody>
             </table>
+
+            <h3>SearchResult</h3>
+            <table>
+                <tbody>
+                    {songResult.map((data,index) => 
+                            <Songs  
+                                key         = {index} 
+                                uri         = {data.uri} 
+                                selected    = {false} 
+                                url         = {data.album.images[2].url} 
+                                name        = {data.name} 
+                                artistName  = {data.album.artists[0].name} 
+                                albumName   = {data.album.name}
+                            />
+                        )
+                    }
+                </tbody>
+            </table>
+
         </div>
     )
 }
