@@ -1,0 +1,18 @@
+.header {
+    height: 85px;
+    width: 100%;
+    background-color: rgba(105, 105, 105, 0.9);
+    position:fixed;
+    top:0;
+    z-index:10;
+    padding: 10px;
+  }
+
+.header-container{
+  float:left;
+}
+
+.profilePic {
+  height: 75px;
+  border-radius: 100px;
+}
