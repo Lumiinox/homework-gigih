@@ -5,7 +5,9 @@ import axios from 'axios';
 import './PlayList.css';
 import ProfileHeader from '../components/userProfile';
 import CreatePlayListForm from '../components/createPlayListForm';
-
+import {useSelector} from 'react-redux';
+import {updateToken} from '../redux/actions'
+import store from '../redux/store';
 
 
 function PlayList(){
@@ -71,7 +73,8 @@ function PlayList(){
 
         }
         console.log(`tokenIn ${tokenIn}`)
-        setToken(tokenIn)
+        setToken(tokenIn);
+        store.dispatch(updateToken(tokenIn));
         console.log(`token ${token}`)
       },[])
 
@@ -87,7 +90,7 @@ function PlayList(){
         await axios.get(`https://api.spotify.com/v1/search`,
         {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: 'Bearer' + useSelector(state => state.token)
             },
             params: {
                 q: searchKeyword,
@@ -123,7 +126,7 @@ function PlayList(){
 
         const headerConfig = {
             headers: {
-                'Authorization': 'Bearer ' + token,
+                'Authorization': 'Bearer ' + useSelector(state => state.token),
                 'Content-Type' : 'application/json',
             },
         }
@@ -146,7 +149,7 @@ function PlayList(){
 
         const headerConfig = {
             headers: {
-                'Authorization': 'Bearer ' + token,
+                'Authorization': 'Bearer ' + useSelector(state => state.token),
                 'Content-Type' : 'application/json',
             },
         }
