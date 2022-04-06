@@ -1,12 +1,14 @@
-import './index.css';
+import '../profileHeader/index.css';
 const ProfileHeader = (props) => {
     return(
         <>
             {props.loginStatus ? (
                 <div className="header">
-                    <div className="header-container">
-                            {/* <img className='profilePic' src={props.imageUrl} alt=""></img> */}
-                            <h3 className='userName'>{props.displayName}</h3>
+                    <div className="header-container-left">
+                        <img src={props.imageUrl} alt="" className='profilePic'/>
+                    </div>
+                    <div className="header-container-right">
+                        <h3 className='userName'>{props.displayName}</h3>
                     </div>
                 </div>
             ) : (

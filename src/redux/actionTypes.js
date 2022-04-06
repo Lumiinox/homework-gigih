@@ -1,2 +1,2 @@
-export const UPDATE_TOKEN = "update-token";
-export const REMOVE_TOKEN = "remove-token";
+export const UPDATE_ACC_DATA = "update-acc-data";
+export const REMOVE_ACC_DATA = "remove-acc-data";

@@ -1,10 +1,11 @@
 import './App.css';
-import PlayList from './pages/PlayList';
+import PlayList from './pages/create-playlist/index';
+import RoutingRender from './routing';
 
 function App() {
   return (
     <div className="App">
-      <PlayList />
+      <RoutingRender />
     </div>
   );
 }

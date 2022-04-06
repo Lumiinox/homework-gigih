@@ -1,38 +1,34 @@
-import Songs from '../components/song/index';
+import Songs from '../../components/song/index';
+import Search from '../../components/search';
+import ProfileHeader from '../../components/profileHeader';
+import CreatePlayListForm from '../../components/createPlayListForm';
+import store from '../../redux/store';
 import React, { useEffect, useState } from 'react';
-import Search from '../components/search';
-import axios from 'axios';
-import './PlayList.css';
-import ProfileHeader from '../components/userProfile';
-import CreatePlayListForm from '../components/createPlayListForm';
 import {useSelector} from 'react-redux';
-import {updateToken} from '../redux/actions'
-import store from '../redux/store';
+import axios from 'axios';
+import * as CallApi from '../../api-calls/fetchAPI';
 
+import './index.css';
+import { updateProfileData } from '../../redux/actions';
+import { Link } from "react-router-dom";
 
-function PlayList(){
-    const CLIENT_ID = "50617af7a91f49b78dd47bcc7ee69433";
-    const REDIRECT_URI = "http://localhost:3000";
-    const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-    const RESPONSE_TYPE = "token";
-    const SCOPE = 'playlist-modify-private';
-
-    const [token, setToken] = useState("");
-
-    const [currentProfileData, setCurrentProfileData] = useState([]);
+function CreatePlayList(){
 
     const [selectedSongUri, setSelectedSongUri] = useState([]);
     const [searchResult, setSearchResult] = useState([]);
     
     const [searchKeyword, setSearchKeyword] = useState("");
     
-    const [userID, setUserID] = useState("");
-    
     const [playlistName, setPlaylistName] = useState("");
     const [playlistDescription, setPlayListDescription] = useState("");
 
     const [searchStatus, setSearchStatus] = useState(false);
-    const [loginStatus, setLoginStatus] = useState(false);
+
+    const loginStatus = useSelector((state) => state.loginStatus);
+    const profilePicUrl = useSelector((state)=>state.picUrl);
+    const userName = useSelector((state)=>state.userName);
+    const token = useSelector((state)=>state.token);
+    const userID = useSelector((state)=>state.userId);
 
     useEffect(() => {
         if(!searchStatus){
@@ -41,48 +37,6 @@ function PlayList(){
         }
     },[selectedSongUri]);
 
-    useEffect(() => {
-        async function getUserData(){
-            await axios.get(`https://api.spotify.com/v1/me`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            }).then ((response) => {
-                setLoginStatus(true);
-                console.log(response);
-                setCurrentProfileData(response.data);
-                setUserID(response.data.id);
-                }
-            )
-        }
-        if(token){
-            getUserData();
-        }
-    },[token])
-
-    useEffect(() => {
-        const hash = window.location.hash
-        let tokenIn
-    
-        if (!tokenIn && hash) {
-            tokenIn = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
-    
-            window.location.hash = "";
-            console.log("URI change");
-
-        }
-        console.log(`tokenIn ${tokenIn}`)
-        setToken(tokenIn);
-        store.dispatch(updateToken(tokenIn));
-        console.log(`token ${token}`)
-      },[])
-
-    const logout = () => {
-        setToken("");
-        setLoginStatus(false);
-    }  
-
     const CallSpotifySearch = async (e) => {
         e.preventDefault();
         console.log(token);
@@ -90,7 +44,7 @@ function PlayList(){
         await axios.get(`https://api.spotify.com/v1/search`,
         {
             headers: {
-                Authorization: 'Bearer' + useSelector(state => state.token)
+                Authorization: `Bearer ${token}`
             },
             params: {
                 q: searchKeyword,
@@ -126,7 +80,7 @@ function PlayList(){
 
         const headerConfig = {
             headers: {
-                'Authorization': 'Bearer ' + useSelector(state => state.token),
+                'Authorization': 'Bearer ' + token,
                 'Content-Type' : 'application/json',
             },
         }
@@ -149,7 +103,7 @@ function PlayList(){
 
         const headerConfig = {
             headers: {
-                'Authorization': 'Bearer ' + useSelector(state => state.token),
+                'Authorization': 'Bearer ' + token,
                 'Content-Type' : 'application/json',
             },
         }
@@ -171,11 +125,10 @@ function PlayList(){
 
     return(
         <div className='bodyWrapper'>
-            
-            {loginStatus ? <ProfileHeader 
+        {loginStatus ? <ProfileHeader 
                 loginStatus = {loginStatus} 
-                // imageUrl    = {currentProfileData.images[0].url}
-                displayName = {currentProfileData.display_name}
+                imageUrl    = {profilePicUrl}
+                displayName = {userName}
             />
         :
             <ProfileHeader 
@@ -185,13 +138,7 @@ function PlayList(){
             />
         }
             
-
-            {!token ?
-                    <a className="buttonA" href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login
-                        to Spotify</a>
-                    : <button onClick={logout}>Logout</button>}
- 
-            <br/>
+        <Link to="/">Back Home</Link>
 
             {loginStatus && 
                 <>
@@ -233,4 +180,4 @@ function PlayList(){
     )
 }
 
-export default PlayList;
+export default CreatePlayList;

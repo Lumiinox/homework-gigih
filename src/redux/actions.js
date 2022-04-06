@@ -1,14 +1,19 @@
 import * as actions from '../redux/actionTypes';
 
-export function updateToken (tokenIn){
-    return {
-        type:actions.UPDATE_TOKEN,
-        payload:"token-placeholder"
+export const updateProfileData = (nameIn, picUrlIn, tokenIn, followersIn, userIdIn) => (
+    {
+        type:actions.UPDATE_ACC_DATA,
+        payload:{
+            userName: nameIn,
+            userId: userIdIn,
+            profilePic: picUrlIn,
+            token: tokenIn,
+            followers: followersIn
     }
-}
+})
 
-export function removeToken(){
+export function removeProfileData(){
     return{
-        type:actions.REMOVE_TOKEN
+        type:actions.REMOVE_ACC_DATA
     }
 }

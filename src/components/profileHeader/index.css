@@ -4,14 +4,17 @@
     background-color: rgba(105, 105, 105, 0.9);
     position:fixed;
     top:0;
-    z-index:10;
-    padding: 10px;
+    z-index:10;    
   }
 
-.header-container{
+.header-container-left{
+  padding: 5px;
   float:left;
 }
-
+.header-container-right{
+  padding: 10px 20px 0 0;
+  float:right;
+}
 .profilePic {
   height: 75px;
   border-radius: 100px;
