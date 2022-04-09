@@ -1,4 +1,7 @@
 import '../profileHeader/index.css';
+import React from 'react';
+import {string, bool} from 'prop-types';
+
 const ProfileHeader = (props) => {
     return(
         <>
@@ -21,6 +24,12 @@ const ProfileHeader = (props) => {
 
         </>
     )
+}
+
+ProfileHeader.propTypes = {
+    loginStatus: bool,
+    imageUrl: string,
+    displayName: string
 }
 
 export default ProfileHeader;

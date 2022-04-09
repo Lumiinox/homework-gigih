@@ -1,6 +1,8 @@
 import './index.css';
-import {useState, setState} from 'react';
+import {useState} from 'react';
 import CustomButton from '../customButton';
+import React from 'react';
+import {string, func} from 'prop-types';
 
 const Songs = (props) => {
     const [selectedStatus, setSelectedStatus] = useState(true);
@@ -23,4 +25,11 @@ const Songs = (props) => {
     )
 }
 
+Songs.propTypes = {
+    selectSong: func,
+    url: string,
+    artistName: string,
+    albumName: string,
+    name: string
+}
 export default Songs;

@@ -1,4 +1,6 @@
 import CustomButton from '../customButton';
+import {func} from 'prop-types';
+import React from 'react';
 
 const Search = (props) => {
     return (
@@ -13,4 +15,8 @@ const Search = (props) => {
     )
 }
 
+Search.propTypes = {
+    onSubmit: func,
+    setSearchKeword: func
+}
 export default Search;

@@ -1,4 +1,7 @@
 import '../profileCard/index.css';
+import React from 'react';
+import {string, bool, number} from 'prop-types';
+
 const ProfileCard = (props) => {
     return(
         <>
@@ -26,6 +29,13 @@ const ProfileCard = (props) => {
 
         </>
     )
+}
+
+ProfileCard.propTypes = {
+    loginStatus: bool,
+    imageUrl: string,
+    displayName: string,
+    followers: number
 }
 
 export default ProfileCard;

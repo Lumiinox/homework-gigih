@@ -45,26 +45,17 @@ export const CreatePlaylist = async (playlistName, playlistDescription, userID, 
         data, 
         headerConfig
     );
-    return response.data;
+    console.log("resonse.data.id" + response.data.id);
+    return response.data.id;
 }
 
-export const AddMusicToCreatedPlaylist = async (selectedSongUri, playListID, token) => {
-    let uris = selectedSongUri;
-    console.log("PlayListID")
-    console.log(playListID);
-    console.log(uris);
-    const data = JSON.stringify({
-        uris
-    });
-
+export const AddMusicToCreatedPlaylist = async (data, playListID, token) => {
     const headerConfig = {
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type' : 'application/json',
         },
     }
-
-    console.log(data);
     const response = await axios.post(`https://api.spotify.com/v1/playlists/${playListID}/tracks`,
         data, 
         headerConfig);

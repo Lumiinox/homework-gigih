@@ -2,14 +2,11 @@ import Songs from '../../components/song/index';
 import Search from '../../components/search';
 import ProfileHeader from '../../components/profileHeader';
 import CreatePlayListForm from '../../components/createPlayListForm';
-import store from '../../redux/store';
 import React, { useEffect, useState } from 'react';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
 import * as CallApi from '../../api-calls/fetchAPI';
 
 import './index.css';
-import { updateProfileData } from '../../redux/actions';
 import { Link } from "react-router-dom";
 
 function CreatePlayList(){
@@ -27,7 +24,7 @@ function CreatePlayList(){
     const loginStatus = useSelector((state) => state.loginStatus);
     const profilePicUrl = useSelector((state)=>state.picUrl);
     const userName = useSelector((state)=>state.userName);
-    const token = useSelector((state)=>state.token);
+    const accessToken = useSelector((state)=>state.token);
     const userID = useSelector((state)=>state.userId);
 
     useEffect(() => {
@@ -39,30 +36,19 @@ function CreatePlayList(){
 
     const CallSpotifySearch = async (e) => {
         e.preventDefault();
-        console.log(token);
-        console.log(searchKeyword);
-        await axios.get(`https://api.spotify.com/v1/search`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                q: searchKeyword,
-                type: "track"
-            }
-        }).then((response)=>{
+        
+        const searchResultData = await CallApi.CallSpotifySearch(accessToken, searchKeyword)
+        if (searchResultData !== null){
+            console.log(searchResultData);
             setSearchStatus(true);            
             const tempSelectedSong = searchResult.filter((searchResult) => selectedSongUri.includes(searchResult.uri));
-            const tempSearchResult = response.data.tracks.items.filter((searchResult) => !selectedSongUri.includes(searchResult.uri));
-            console.log(tempSearchResult);
-            console.log(tempSelectedSong);
+            const tempSearchResult = searchResultData.tracks.items.filter((searchResult) => !selectedSongUri.includes(searchResult.uri));
             setSearchResult([...tempSelectedSong, ...tempSearchResult]);
-        }).catch((e) => console.log(e));
+        }
     }
 
     const selectSong = (searchResult) => {
         const tempUri = searchResult.uri;
-
         if (selectedSongUri.includes(tempUri)){
             setSelectedSongUri(selectedSongUri.filter((item) => item !== tempUri));
         } else {
@@ -71,26 +57,9 @@ function CreatePlayList(){
     }
 
     const CreatePlaylist = async () => {
-        const data = JSON.stringify({
-            name: playlistName,
-            description: playlistDescription,
-            public: false,
-            collaborative: false,
-        })
-
-        const headerConfig = {
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type' : 'application/json',
-            },
+        const playListID = await CallApi.CreatePlaylist(playlistName, playlistDescription, userID, accessToken);
+        return playListID;
         }
-
-        const response = await axios.post(`https://api.spotify.com/v1/users/${userID}/playlists`,
-            data, 
-            headerConfig
-        );
-        return response.data.id;
-    }
 
     const AddMusicToCreatedPlaylist = async (playListID) => {
         let uris = selectedSongUri;
@@ -99,21 +68,9 @@ function CreatePlayList(){
         console.log(uris);
         const data = JSON.stringify({
             uris
+        
         });
-
-        const headerConfig = {
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type' : 'application/json',
-            },
-        }
-
-        console.log(data);
-        const response = await axios.post(`https://api.spotify.com/v1/playlists/${playListID}/tracks`,
-            data, 
-            headerConfig);
-        console.log(response);
-        alert("PlayList Created");
+        await CallApi.AddMusicToCreatedPlaylist(data, playListID, accessToken).then(alert("Playlist Created"));
     }
 
     const CreateAndAddToPlaylist = async (e) =>{
@@ -152,7 +109,6 @@ function CreatePlayList(){
                     <br/>
 
                     <Search 
-                        token           = {token} 
                         setSearchKeword = {e => setSearchKeyword(e.target.value)} 
                         onSubmit        = {CallSpotifySearch}
                     />
