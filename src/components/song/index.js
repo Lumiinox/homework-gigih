@@ -14,13 +14,13 @@ const Songs = (props) => {
 
     return(
         <>
-            <tr>
-                <td><img className="songImage" src={props.url} alt=""/></td>
-                <td className='textTdElement'>{props.name}</td>
-                <td className='textTdElement'>{props.artistName}</td>
-                <td className='textTdElement'>{props.albumName}</td>
-                <td><CustomButton type="button" onClick={SwitchStatus}>{selectedStatus ? "Select" : "Deselect"}</CustomButton></td>
-            </tr>
+            <div className='child'>
+                <div><img className="songImage" src={props.url} alt=""/></div>
+                <h2 className='textTdElement'>{props.name}</h2>
+                <p className='textTdElement'>{props.artistName}</p>
+                <p className='textTdElement'>{props.albumName}</p>
+                <div><CustomButton type="button" onClick={SwitchStatus}>{selectedStatus ? "Select" : "Deselect"}</CustomButton></div>
+            </div>
         </>
     )
 }

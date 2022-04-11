@@ -114,13 +114,11 @@ function CreatePlayList(){
                     />
 
                     <br/>
-
-                    <table>
-                        <tbody>
-                            {searchResult.map((data) => 
-                                    <Songs  
+                    <div className='parent'>
+                        {searchResult.map((data) => 
+                                    <Songs
                                         key         = {data.id}
-                                        url         = {data.album.images[2].url} 
+                                        url         = {data.album.images[1].url} 
                                         name        = {data.name} 
                                         artistName  = {data.album.artists[0].name} 
                                         albumName   = {data.album.name}
@@ -128,8 +126,7 @@ function CreatePlayList(){
                                     />
                                 )
                             }
-                        </tbody>
-                    </table>
+                    </div>
                 </>
             } 
         </div>

@@ -81,3 +81,8 @@ textarea{
 .buttonA{
   width: 200px;
 }
+
+.parent {
+  display: flex;
+  flex-wrap: wrap;
+}
