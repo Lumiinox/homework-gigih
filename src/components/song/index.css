@@ -23,8 +23,13 @@ td{
   text-align: center;
   margin: 20px;
   padding: 30px 10px;
+  border-radius: 25px;
 }
 
 body {
   font-family: system-ui, serif;
+}
+
+.songButton{
+  width: 200px;
 }

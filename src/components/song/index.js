@@ -19,7 +19,7 @@ const Songs = (props) => {
                 <h2 className='textTdElement'>{props.name}</h2>
                 <p className='textTdElement'>{props.artistName}</p>
                 <p className='textTdElement'>{props.albumName}</p>
-                <div><CustomButton type="button" onClick={SwitchStatus}>{selectedStatus ? "Select" : "Deselect"}</CustomButton></div>
+                <div><CustomButton className="songButton" type="button" onClick={SwitchStatus}>{selectedStatus ? "Select" : "Deselect"}</CustomButton></div>
             </div>
         </>
     )
